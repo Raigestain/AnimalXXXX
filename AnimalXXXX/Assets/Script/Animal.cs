@@ -9,7 +9,8 @@ public class Animal : Agent
     // Start is called before the first frame update
     void Start()
     {
-        
+        // llamamos el update del padre
+        base.Start();
     }
 
     // Update is called once per frame

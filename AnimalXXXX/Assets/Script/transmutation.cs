@@ -79,6 +79,15 @@ public class transmutation : MonoBehaviour
         }
     }
 
+    void OnCollisionStay(Collision collisionInfo)
+    {
+        // Debug-draw all contact points and normals
+        foreach (ContactPoint contact in collisionInfo.contacts)
+        {
+            print("CACA");
+        }
+    }
+
     public void Activate()
     {
         elapsedTime = 0.0f;
