@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Animal : MonoBehaviour
+public class Animal : Agent
 {
     private bool m_isSelected = false;
 
@@ -15,7 +15,8 @@ public class Animal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // llamamos el update del padre
+        base.Update();
     }
 
     public void Select()

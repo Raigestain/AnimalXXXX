@@ -12,6 +12,9 @@ public class Agent : MonoBehaviour
     public float _velocity = 1.0f;
     public float _maxSpeed = 2.0f;
     public float _arriveRadius = 1.0f;
+    public float _floackingRange = 1.0f;
+    public float _separationDistance = 1.0f;
+    public float _separationForce = 2.0f;
     public GameObject _node = null;
     public bool _patrol = false;
 
@@ -20,6 +23,7 @@ public class Agent : MonoBehaviour
     private float m_speed;
     private Vector3 m_steeringForce;
     private Vector3 m_targetPos;
+    private bool m_hasTarget = false;
 
     // Start is called before the first frame update
     void Start()
@@ -31,29 +35,33 @@ public class Agent : MonoBehaviour
         if (_objective)
         {
             m_targetPos = _objective.transform.position;
+            m_hasTarget = true;
         }
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         // Limpiamos la fuerza
         m_steeringForce = new Vector3();
 
-        // Usamos la fuerza
-        m_steeringForce = Seek(_objective.transform.position, _seekForce);
+        if (m_hasTarget)
+        {
+            // Usamos la fuerza
+            m_steeringForce = Arrive(m_targetPos, _seekForce) + Separation();
 
-        // Contenemos la velocidad
-        m_speed = truncate(m_steeringForce.magnitude, _maxSpeed);
+            // Contenemos la velocidad
+            m_speed = truncate(m_steeringForce.magnitude, _maxSpeed);
 
-        // Calculamos la nueva direccion
-        Vector3 newDir = (m_direction + m_steeringForce * _mass).normalized;
+            // Calculamos la nueva direccion
+            Vector3 newDir = (m_direction + m_steeringForce * _mass).normalized;
 
-        // Update position
-        transform.position += newDir * m_speed * Time.deltaTime;
+            // Update position
+            transform.position += newDir * m_speed * Time.deltaTime;
 
-        // Update direction
-        m_direction = newDir;
+            // Update direction
+            m_direction = newDir;
+        }
     }
 
     //-------------------------------------------------------------------------
@@ -62,6 +70,7 @@ public class Agent : MonoBehaviour
     public void setTargetPos(Vector3 _pos)
     {
         m_targetPos = _pos;
+        m_hasTarget = true;
     }
 
     public float truncate(float _magnitud, float _max)
@@ -82,6 +91,11 @@ public class Agent : MonoBehaviour
         return (_target - transform.position).normalized * _force;
     }
 
+    Vector3 Flee(Vector3 _target, float _force)
+    {
+        return (transform.position - _target).normalized * _force;
+    }
+
     public Vector3 Arrive(Vector3 objective, float forceMagnitude)
     {
         Vector3 desiredVector = objective - transform.position;
@@ -94,6 +108,34 @@ public class Agent : MonoBehaviour
         }
 
         return desiredVector.normalized * (forceMagnitude * multiplier);
+    }
+
+    Vector3 Separation()
+    {
+        // Get list of all the agents
+        var agents = FindObjectsOfType<Animal>();
+        Vector3 Separation = Vector3.zero;
+
+        if (agents.Length != 0)
+        {
+            for (int i = 0; i < agents.Length; ++i)
+            {
+                if (agents[i] != this)
+                {
+                    // Get distance between this and the other agent
+                    Vector3 target = agents[i].transform.position - transform.position;
+                    if (target.magnitude < _floackingRange)
+                    {
+                        // If is in distance for separation
+                        if (target.magnitude < _separationDistance)
+                        {
+                            Separation = Flee(agents[i].transform.position, _separationForce);
+                        }
+                    }
+                }
+            }
+        }
+        return Separation;
     }
 
     public Vector3 FollowPath(float _force)
