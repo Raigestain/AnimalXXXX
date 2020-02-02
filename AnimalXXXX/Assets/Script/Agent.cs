@@ -5,7 +5,7 @@ using UnityEngine;
 public class Agent : MonoBehaviour
 {
     // Variables publicas
-    public GameObject _objective = null;
+    public GameObject _objective;
     public float _seekForce = 5.0f;
     [Range(0.0f, 1.0f)]
     public float _mass = 0.5f;
@@ -15,7 +15,7 @@ public class Agent : MonoBehaviour
     public float _floackingRange = 1.0f;
     public float _separationDistance = 1.0f;
     public float _separationForce = 2.0f;
-    public GameObject _node = null;
+    public GameObject _initNode;
     public bool _patrol = false;
 
     // Variables privadas
@@ -24,6 +24,7 @@ public class Agent : MonoBehaviour
     protected Vector3 m_steeringForce;
     protected Vector3 m_targetPos;
     protected bool m_hasTarget = false;
+    private GameObject m_followNode;
 
     // Start is called before the first frame update
     public void Start()
@@ -37,6 +38,9 @@ public class Agent : MonoBehaviour
             m_targetPos = _objective.transform.position;
             m_hasTarget = true;
         }
+
+        // Init follow node
+        m_followNode = _initNode;
     }
 
     // Update is called once per frame
@@ -48,7 +52,7 @@ public class Agent : MonoBehaviour
         if (m_hasTarget)
         {
             // Usamos la fuerza
-            m_steeringForce = Arrive(m_targetPos, _seekForce) + Separation();
+            m_steeringForce = FollowPath(_seekForce);
 
             // Contenemos la velocidad
             m_speed = truncate(m_steeringForce.magnitude, _maxSpeed);
@@ -141,19 +145,19 @@ public class Agent : MonoBehaviour
 
     public Vector3 FollowPath(float _force)
     {
-        Node currentNode = _node.GetComponent<Node>();
+        Node currentNode = m_followNode.GetComponent<Node>();
         Vector3 desired = currentNode.transform.position - transform.position;
         if (desired.magnitude < currentNode.Radius)
         {
             if (currentNode.getNext())
             {
-                _node = currentNode.getNext();
+                m_followNode = currentNode.getNext();
             }
             else
             {
                 if (_patrol)
                 {
-                    _node = _objective;
+                    m_followNode = _initNode;
                 }
             }
         }
