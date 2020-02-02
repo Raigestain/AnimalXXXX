@@ -19,17 +19,17 @@ public class Agent : MonoBehaviour
     public bool _patrol = false;
 
     // Variables privadas
-    private Vector3 m_direction;
-    private float m_speed;
-    private Vector3 m_steeringForce;
-    private Vector3 m_targetPos;
-    private bool m_hasTarget = false;
+    protected Vector3 m_direction;
+    protected float m_speed;
+    protected Vector3 m_steeringForce;
+    protected Vector3 m_targetPos;
+    protected bool m_hasTarget = false;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         // Inicializmos la direccion
-        m_direction = Vector3.left;
+        m_direction = Vector3.forward;
 
         // Si hay un objetivo utilizamos  su posicion como target
         if (_objective)
@@ -69,6 +69,7 @@ public class Agent : MonoBehaviour
     //-------------------------------------------------------------------------
     public void setTargetPos(Vector3 _pos)
     {
+
         m_targetPos = _pos;
         m_hasTarget = true;
     }

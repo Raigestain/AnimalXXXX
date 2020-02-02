@@ -6,8 +6,6 @@ public class InputManager : MonoBehaviour
 {
     private bool m_isSelectionComplete = false; //Se usa para cuando se solto el click izquierdo.
     private bool m_isSelecting = false; //Se usa mientras el click izquierdo esta apretado.
-    private Vector3 m_initPosition;
-    private Vector3 m_finalPosition;
     private Vector3 m_initViewPos;
     private Vector3 m_finalViewPos;
     private Camera m_camera;
@@ -37,10 +35,8 @@ public class InputManager : MonoBehaviour
     void Start()
     {
         m_camera = Camera.main;
-        m_initPosition = new Vector3();
-        m_finalPosition = new Vector3();
         m_selectedAnimals = new List<Animal>();
-        m_floor = GameObject.Find("Floor").GetComponent<Transform>();
+        //m_floor = GameObject.Find("Floor").GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -92,7 +88,7 @@ public class InputManager : MonoBehaviour
                         //Se selecciona solo al animal al que se le dio click.
                         animal.Select();
                         m_selectedAnimals.Add(animal);
-                        Debug.Log(objectTransform.name);
+                        //Debug.Log(objectTransform.name);
                     }
                 }
             }
@@ -128,11 +124,11 @@ public class InputManager : MonoBehaviour
                     {
                         animalObjs[i].Select();
                         m_selectedAnimals.Add(animalObjs[i]);
-                        Debug.Log(animalObjs[i].name);
+                        //Debug.Log(animalObjs[i].name);
                     }
                     else
                     {
-                        Debug.Log("Fuera: " + animalObjs[i].name);
+                        //Debug.Log("Fuera: " + animalObjs[i].name);
                     }
                 }
             }
@@ -140,17 +136,6 @@ public class InputManager : MonoBehaviour
             m_isSelectionComplete = false;
             m_isSelecting = false;
         }
-
-        // Debug de rashooos laseeeeeer........!!!!!!!!!
-        //Debug.DrawRay(OBBdir1.origin + OBBdir1.direction * 9, normal1 * 2, Color.red);
-        //Debug.DrawRay(OBBdir2.origin + OBBdir2.direction * 9, normal2 * 2, Color.green);
-        //Debug.DrawRay(OBBdir3.origin + OBBdir3.direction * 9, normal3 * 2, Color.blue);
-        //Debug.DrawRay(OBBdir4.origin + OBBdir4.direction * 9, normal4 * 2, Color.black);
-
-        //Debug.DrawRay(OBBdir1.origin, OBBdir1.direction * 9999, Color.red);
-        //Debug.DrawRay(OBBdir2.origin, OBBdir2.direction * 9999, Color.green);
-        //Debug.DrawRay(OBBdir3.origin, OBBdir3.direction * 9999, Color.blue);
-        //Debug.DrawRay(OBBdir4.origin, OBBdir4.direction * 9999, Color.black);
 
         if (Input.GetMouseButtonUp(1))
         {
@@ -161,13 +146,17 @@ public class InputManager : MonoBehaviour
             //Si el rayo choca conta algo, entonces se guardan las coordenadas para el movimiento.
             if (Physics.Raycast(selectionRay, out hit))
             {
-                Vector3 position = hit.point;
-                position.y = m_floor.position.y + FLOOR_OFFSET;
-
-                //Se revisa la lista de objetos seleccionados para moverlos a la posicion.
-                foreach (var anim in m_selectedAnimals)
+                if(hit.transform.gameObject.layer == (int)LAYERS.FLOOR)
                 {
-                    anim.setTargetPos(position);
+                    Transform floor = hit.transform;
+                    Vector3 position = hit.point;
+                    position.y = floor.position.y + FLOOR_OFFSET;
+
+                    //Se revisa la lista de objetos seleccionados para moverlos a la posicion.
+                    foreach (var anim in m_selectedAnimals)
+                    {
+                        anim.setTargetPos(position);
+                    }
                 }
             }
         }
