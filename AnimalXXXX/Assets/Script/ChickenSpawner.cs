@@ -45,7 +45,6 @@ public class ChickenSpawner : MonoBehaviour
             newChicken.transform.position = spawnPos;
             newChicken.transform.rotation = transform.rotation;
             m_isFogSpawned = false;
-            PlayerData.AddChickens(1);
         }
     }
 }

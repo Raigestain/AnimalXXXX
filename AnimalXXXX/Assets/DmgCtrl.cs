@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageCtrl : MonoBehaviour
+public class DmgCtrl : MonoBehaviour
 {
     // Variables
-    int m_Score = 0;
+    int m_Score = 4;
     public int m_Tier1;
     public int m_Tier2;
     public int m_Tier3;
@@ -20,11 +20,12 @@ public class DamageCtrl : MonoBehaviour
     GameObject m_Calabaza;
     GameObject m_Palito;
     GameObject m_Molino;
+    ParticleSystem m_Construccion;
+    ParticleSystem m_Destruccion;
 
     // Start is called before the first frame update
     void Start()
     {
-        m_Score = 0;
         m_Piso = GameObject.Find("Piso");
         m_Paredes = GameObject.Find("Paredes");
         m_Techo = GameObject.Find("Techo");
@@ -33,6 +34,8 @@ public class DamageCtrl : MonoBehaviour
         m_Calabaza = GameObject.Find("Calabaza");
         m_Palito = GameObject.Find("Palito");
         m_Molino = GameObject.Find("Molino");
+        m_Construccion = GameObject.Find("Construccion").GetComponent<ParticleSystem>();
+        m_Destruccion = GameObject.Find("Desctruccion").GetComponent<ParticleSystem>();
 
         m_Piso.SetActive(false);
         m_Paredes.SetActive(false);
@@ -50,7 +53,7 @@ public class DamageCtrl : MonoBehaviour
     }
 
     // set score 
-    void setScore(int _Score)
+    public void setScore(int _Score)
     {
         m_Score = _Score;
 
@@ -60,11 +63,13 @@ public class DamageCtrl : MonoBehaviour
             if (!m_Piso.activeInHierarchy)
             {
                 m_Piso.SetActive(true);
+                m_Construccion.Play();
             }
         }
         else
         {
             m_Piso.SetActive(false);
+            m_Destruccion.Play();
         }
 
         if (m_Score >= m_Tier2)
@@ -72,11 +77,13 @@ public class DamageCtrl : MonoBehaviour
             if (!m_Paredes.activeInHierarchy)
             {
                 m_Paredes.SetActive(true);
+                m_Construccion.Play();
             }
         }
         else
         {
             m_Paredes.SetActive(false);
+            m_Destruccion.Play();
         }
 
         if (m_Score >= m_Tier3)
@@ -86,12 +93,14 @@ public class DamageCtrl : MonoBehaviour
             {
                 m_Techo.SetActive(true);
                 m_Maiz.SetActive(true);
+                m_Construccion.Play();
             }
         }
         else
         {
             m_Techo.SetActive(false);
             m_Maiz.SetActive(false);
+            m_Destruccion.Play();
         }
 
         if (m_Score >= m_Tier4)
@@ -101,12 +110,14 @@ public class DamageCtrl : MonoBehaviour
             {
                 m_Ventanas.SetActive(true);
                 m_Calabaza.SetActive(true);
+                m_Construccion.Play();
             }
         }
         else
         {
             m_Ventanas.SetActive(false);
             m_Calabaza.SetActive(false);
+            m_Destruccion.Play();
         }
 
         if (m_Score >= m_Tier5)
@@ -116,19 +127,19 @@ public class DamageCtrl : MonoBehaviour
             {
                 m_Palito.SetActive(true);
                 m_Molino.SetActive(true);
+                m_Construccion.Play();
             }
-
-            return;
         }
         else
         {
             m_Palito.SetActive(false);
             m_Molino.SetActive(false);
+            m_Destruccion.Play();
         }
     }
 
     // get score 
-    int getScore()
+    public int getScore()
     {
         return m_Score;
     }
