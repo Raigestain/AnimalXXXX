@@ -5,7 +5,6 @@ using UnityEngine;
 public class Agent : MonoBehaviour
 {
     // Variables publicas
-    public GameObject _objective;
     public float _seekForce = 5.0f;
     [Range(0.0f, 1.0f)]
     public float _mass = 0.5f;
@@ -23,8 +22,21 @@ public class Agent : MonoBehaviour
     protected float m_speed;
     protected Vector3 m_steeringForce;
     protected Vector3 m_targetPos;
+    protected Vector3 _objective;
     private GameObject m_followNode;
-    
+
+    public Vector3 objective
+    {
+        get
+        {
+            return _objective;
+        }
+        set
+        {
+            _objective = value;
+        }
+    }
+
     // FSM
     private FSM m_currentState = null;
     private STATES m_targetStateName;
@@ -36,9 +48,9 @@ public class Agent : MonoBehaviour
         m_direction = Vector3.forward;
 
         // Si hay un objetivo utilizamos  su posicion como target
-        if (_objective)
+        if (null != _objective)
         {
-            m_targetPos = _objective.transform.position;
+            m_targetPos = _objective;
         }
 
         // Inicializamos el primer nodo
@@ -155,6 +167,7 @@ public class Agent : MonoBehaviour
 
             // Update position
             transform.position += newDir * m_speed * Time.deltaTime;
+
 
             // Update direction
             m_direction = newDir;

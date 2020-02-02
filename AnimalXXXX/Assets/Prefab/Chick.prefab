@@ -285,7 +285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4496079692105881273}
   - component: {fileID: 4555403787865411153}
-  - component: {fileID: 114038349787385010}
+  - component: {fileID: 114668800297404362}
   m_Layer: 0
   m_Name: Chick
   m_TagString: Untagged
@@ -302,7 +302,7 @@ Transform:
   m_GameObject: {fileID: 4498708012106485217}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.876, y: 0.25, z: 0.09}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children:
   - {fileID: 4496122781972386935}
   - {fileID: 4496101672578209447}
@@ -328,7 +328,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114038349787385010
+--- !u!114 &114668800297404362
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -337,20 +337,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4498708012106485217}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a30366aa073ebdd4b96d8c2809832fb6, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f3dbaf0f784b664b90853f210141129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objective: {fileID: 0}
   _seekForce: 0.2
   _mass: 0.5
-  _velocity: 1
-  _maxSpeed: 2
+  _velocity: 0.2
+  _maxSpeed: 0.3
   _arriveRadius: 0.1
-  _floackingRange: 0.5
-  _separationDistance: 0.5
-  _separationForce: 0.1
-  _node: {fileID: 0}
+  _floackingRange: 1
+  _separationDistance: 1
+  _separationForce: 2
+  _initNode: {fileID: 0}
   _patrol: 0
+  m_changeState: 0
+  m_type: 0
 --- !u!1 &4498917508961275699
 GameObject:
   m_ObjectHideFlags: 0

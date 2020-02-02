@@ -4834,11 +4834,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d7a91651047f84ebf3d1b57b69ff9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Tier1: 0
-  m_Tier2: 1
-  m_Tier3: 2
-  m_Tier4: 3
-  m_Tier5: 4
+  m_Tier1: 8
+  m_Tier2: 10
+  m_Tier3: 13
+  m_Tier4: 18
+  m_Tier5: 25
 --- !u!1 &8482163759077639009
 GameObject:
   m_ObjectHideFlags: 0

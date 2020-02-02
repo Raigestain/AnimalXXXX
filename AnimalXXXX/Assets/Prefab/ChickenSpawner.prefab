@@ -40,7 +40,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 178754250708511538}
   serializedVersion: 6
-  lengthInSec: 5
+  lengthInSec: 0.5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -115,7 +115,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -865,7 +865,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 40
+      scalar: 80
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -4724,7 +4724,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7595917007824408592}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7, y: 0.25, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
@@ -4790,9 +4790,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 427f1b26451730349af56c44cf1e124f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_chickenBase: {fileID: 114038349787385010, guid: 7cf171a032eb2284bb18a5edab2e2f79,
+  m_chickenBase: {fileID: 114668800297404362, guid: 7cf171a032eb2284bb18a5edab2e2f79,
     type: 3}
-  m_timeToSpawn: 10
+  m_timeToSpawn: 15
+  m_timeToStart: 10
+  m_moveDistance: 1
+  m_colRadius: 0.3
+  m_occupied: 0
+  m_producing: 0
 --- !u!1001 &1622276774008338286
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4803,6 +4808,10 @@ PrefabInstance:
     - target: {fileID: 1225105858667644, guid: 22ebc3f42e2c70d4caf06a1d1e892649, type: 3}
       propertyPath: m_Name
       value: Chicken
+      objectReference: {fileID: 0}
+    - target: {fileID: 1225105858667644, guid: 22ebc3f42e2c70d4caf06a1d1e892649, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4168730798278848, guid: 22ebc3f42e2c70d4caf06a1d1e892649, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4850,15 +4859,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4168730798278848, guid: 22ebc3f42e2c70d4caf06a1d1e892649, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4168730798278848, guid: 22ebc3f42e2c70d4caf06a1d1e892649, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4168730798278848, guid: 22ebc3f42e2c70d4caf06a1d1e892649, type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 95164213363941736, guid: 22ebc3f42e2c70d4caf06a1d1e892649,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22ebc3f42e2c70d4caf06a1d1e892649, type: 3}

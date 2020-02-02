@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Animal : Agent
 {
-    private bool m_isSelected = false;
     public const int ANIMATION = 0;
+    public ANIMAL_STATES m_changeState;
 
-    //temp
-    public int m_state = 1; 
+    //Tipo del animal... jeje saludos.
+    public ANIMAL_TYPES m_type;
 
     // Start is called before the first frame update
     protected void Start()
     {
+        m_changeState = ANIMAL_STATES.WALK;
         base.Start();
     }
 
@@ -23,13 +24,8 @@ public class Animal : Agent
         base.Update();
     }
 
-    public void Select()
+    public void SetState(ANIMAL_STATES newState)
     {
-        m_isSelected = true;
-    }
-
-    public void Deselect()
-    {
-        m_isSelected = false;
+        m_changeState = newState;
     }
 }

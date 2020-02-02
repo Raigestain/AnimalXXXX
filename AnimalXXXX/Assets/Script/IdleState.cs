@@ -15,15 +15,19 @@ public class IdleState : FSM
     {
         Animal tempAnimal = GetComponent<Animal>();
 
-        if (tempAnimal.m_state == 0)
+        if (tempAnimal.m_type == ANIMAL_TYPES.CHICKEN)
         {
+            if(tempAnimal.m_changeState == ANIMAL_STATES.IDLE)
+            {
+                return STATES.S_IDLE;
+            }
             return STATES.S_WALK;
         }
-        else if(tempAnimal.m_state == 1)
+        else if(tempAnimal.m_type == ANIMAL_TYPES.DOG)
         {
             return STATES.S_PATROL;
         }
-        else if (tempAnimal.m_state == 2)
+        else if (tempAnimal.m_type == ANIMAL_TYPES.ALPACA)
         {
             return STATES.S_RUN;
         }

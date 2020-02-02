@@ -15,9 +15,10 @@ public class Chicken : Animal
 
         m_animator = GetComponent<Animator>();
 
-        Vector3 target = GameObject.Find("ChickenSpawnTarget").transform.position;
+        Transform target = GameObject.Find("ChickenSpawnTarget").transform;
+        //m_followNode = target.gameObject;
 
-        setTargetPos(target);
+        setTargetPos(target.position);
     }
 
     // Update is called once per frame

@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour
     private Camera m_camera;
     private List<Animal> m_selectedAnimals;
     private Transform m_floor;
-    private const float FLOOR_OFFSET = 0.5f;
+    private const float FLOOR_OFFSET = 0.2f;
 
     [SerializeField]
     private float m_deathZone = 0.2f;
@@ -56,11 +56,6 @@ public class InputManager : MonoBehaviour
             point2 = Input.mousePosition;
             wsPoint2 = m_camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, m_camera.nearClipPlane));
 
-            //Limpiar la lista de animales seleccionados.
-            foreach (var anim in m_selectedAnimals)
-            {
-                anim.Deselect();
-            }
             m_selectedAnimals.Clear();
 
             // Cambiamos bandera a verdadero
@@ -85,8 +80,6 @@ public class InputManager : MonoBehaviour
                     Animal animal = objectTransform.GetComponent<Animal>();
                     if (null != animal)
                     {
-                        //Se selecciona solo al animal al que se le dio click.
-                        animal.Select();
                         m_selectedAnimals.Add(animal);
                         //Debug.Log(objectTransform.name);
                     }
@@ -122,7 +115,6 @@ public class InputManager : MonoBehaviour
                         Vector3.Dot(pos - new Vector3(left, bot, near), normal3) < 0.0f &&
                         Vector3.Dot(pos - new Vector3(right, bot, near), normal4) < 0.0f)
                     {
-                        animalObjs[i].Select();
                         m_selectedAnimals.Add(animalObjs[i]);
                         //Debug.Log(animalObjs[i].name);
                     }
@@ -146,11 +138,12 @@ public class InputManager : MonoBehaviour
             //Si el rayo choca conta algo, entonces se guardan las coordenadas para el movimiento.
             if (Physics.Raycast(selectionRay, out hit))
             {
+
                 if(hit.transform.gameObject.layer == (int)LAYERS.FLOOR)
                 {
                     Transform floor = hit.transform;
                     Vector3 position = hit.point;
-                    position.y = floor.position.y + FLOOR_OFFSET;
+                    position.y = FLOOR_OFFSET;
 
                     //Se revisa la lista de objetos seleccionados para moverlos a la posicion.
                     foreach (var anim in m_selectedAnimals)
