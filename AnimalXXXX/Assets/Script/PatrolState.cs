@@ -7,6 +7,7 @@ public class PatrolState : FSM
     public override void onEntry()
     {
         Debug.Log("Entro a Patrol");
+        GetComponent<Animator>().SetInteger("animation", (int)ANIMAL_STATES.WALK);
         m_ID = STATES.S_PATROL;
     }
 

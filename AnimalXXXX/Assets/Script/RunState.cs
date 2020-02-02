@@ -14,6 +14,11 @@ public class RunState : FSM
     // Update is called once per frame
     public override STATES Update()
     {
+        Animal tempAnimal = GetComponent<Animal>();
+        if (tempAnimal.m_changeState == ANIMAL_STATES.WALK)
+        {
+            return STATES.S_WALK;
+        }
         return STATES.S_RUN;
     }
 

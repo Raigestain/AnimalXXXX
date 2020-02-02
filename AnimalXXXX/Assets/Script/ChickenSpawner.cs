@@ -8,6 +8,8 @@ public class ChickenSpawner : MonoBehaviour
     private Animal m_attachedChick = null;
     private GameObject m_hen = null;
 
+    public Transform _spawnObjective;
+
     [SerializeField]
     private Animal m_chickenBase;
     [SerializeField]
@@ -66,8 +68,7 @@ public class ChickenSpawner : MonoBehaviour
                 newChicken.transform.position = spawnPos;
                 newChicken.transform.rotation = transform.rotation;
                 m_isFogSpawned = false;
-
-                newChicken.objective = transform.forward * m_moveDistance;
+                newChicken.objective = _spawnObjective.position;
             }
         }
         else if(m_occupied)
@@ -89,7 +90,7 @@ public class ChickenSpawner : MonoBehaviour
             }
         }
 
-        if(!m_occupied)
+        if (!m_occupied)
         {
             DetectAnimal();
         }

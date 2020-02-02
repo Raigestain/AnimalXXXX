@@ -13,12 +13,17 @@ public class Animal : Agent
     private Resources m_package;
 
     public bool m_deliveredPackage = false;
+    public bool m_inDelivery = false;
 
     // Start is called before the first frame update
     protected void Start()
-    {
+    {        
         m_changeState = ANIMAL_STATES.WALK;
         base.Start();
+        if(GetComponentInChildren<ParticleSystem>())
+        {
+            GetComponentInChildren<ParticleSystem>().Stop();
+        }
     }
 
     // Update is called once per frame

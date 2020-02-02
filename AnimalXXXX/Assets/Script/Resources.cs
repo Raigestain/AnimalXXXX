@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Resources : MonoBehaviour
 {
-    private const float HEIGHT_OFFSET = 0.2f;
+    private const float HEIGHT_OFFSET = 0.4f;
 
     [SerializeField]
     private float m_colRadius = 0.3f;
@@ -55,7 +55,11 @@ public class Resources : MonoBehaviour
                 animal.SetPackage(this);
                 UpdatePosition();
                 m_occupied = true;
-
+                if(animal.m_deliveredPackage)
+                {
+                    animal.m_deliveredPackage = false;
+                }
+                animal.m_inDelivery = true;
                 animal.setTargetPos(m_player.GetBarnPosition());
                 animal.SetState(ANIMAL_STATES.RUN);
             }

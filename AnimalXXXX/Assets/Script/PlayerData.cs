@@ -76,6 +76,7 @@ public class PlayerData : MonoBehaviour
                     Destroy(package.gameObject);
                     animal.setTargetPos(new Vector3(0, DELIVERY_HEIGHT, 0));
                     animal.SetState(ANIMAL_STATES.WALK);
+                    animal.m_inDelivery = false;
                     animal.m_deliveredPackage = true;
                 }
             }
