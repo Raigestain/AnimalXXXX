@@ -7,6 +7,9 @@ public class Animal : Agent
     private bool m_isSelected = false;
     public const int ANIMATION = 0;
 
+    //temp
+    public int m_state = 1; 
+
     // Start is called before the first frame update
     protected void Start()
     {

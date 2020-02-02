@@ -23,8 +23,11 @@ public class Agent : MonoBehaviour
     protected float m_speed;
     protected Vector3 m_steeringForce;
     protected Vector3 m_targetPos;
-    protected bool m_hasTarget = false;
     private GameObject m_followNode;
+    
+    // FSM
+    private FSM m_currentState = null;
+    private STATES m_targetStateName;
 
     // Start is called before the first frame update
     public void Start()
@@ -36,23 +39,113 @@ public class Agent : MonoBehaviour
         if (_objective)
         {
             m_targetPos = _objective.transform.position;
-            m_hasTarget = true;
         }
 
-        // Init follow node
+        // Inicializamos el primer nodo
         m_followNode = _initNode;
+
+        //Set initial State to all the enemies.
+        m_currentState = gameObject.AddComponent<IdleState>() as IdleState;
+        m_currentState.onEntry();
     }
 
     // Update is called once per frame
     public void Update()
     {
+        if (m_currentState)
+        {
+            m_targetStateName = m_currentState.Update();
+
+            if (m_targetStateName != m_currentState.m_ID)
+            {
+                m_currentState.onExist();
+                Destroy(m_currentState);
+                if (m_targetStateName == STATES.S_IDLE)
+                {
+                    m_currentState = gameObject.AddComponent(typeof(IdleState)) as IdleState;
+                    m_currentState.onEntry();
+                }
+                else if (m_targetStateName == STATES.S_WALK)
+                {
+                    m_currentState = gameObject.AddComponent(typeof(WalkState)) as WalkState;
+                    m_currentState.onEntry();
+                }
+                else if (m_targetStateName == STATES.S_RUN)
+                {
+                    m_currentState = gameObject.AddComponent(typeof(RunState)) as RunState;
+                    m_currentState.onEntry();
+                }
+                else if (m_targetStateName == STATES.S_JUMP)
+                {
+                    m_currentState = gameObject.AddComponent(typeof(JumpState)) as JumpState;
+                    m_currentState.onEntry();
+                }
+                else if (m_targetStateName == STATES.S_CHARGE)
+                {
+                    m_currentState = gameObject.AddComponent(typeof(ChargeState)) as ChargeState;
+                    m_currentState.onEntry();
+                }
+                else if (m_targetStateName == STATES.S_DELIVER)
+                {
+                    m_currentState = gameObject.AddComponent(typeof(DeliverState)) as DeliverState;
+                    m_currentState.onEntry();
+                }
+                else if (m_targetStateName == STATES.S_DIE)
+                {
+                    m_currentState = gameObject.AddComponent(typeof(DieState)) as DieState;
+                    m_currentState.onEntry();
+                }
+                else if (m_targetStateName == STATES.S_PATROL)
+                {
+                    m_currentState = gameObject.AddComponent(typeof(PatrolState)) as PatrolState;
+                    m_currentState.onEntry();
+                }
+                else
+                {
+                    m_currentState = null;
+                }
+            }
+        }
+
+        // Update steering forces 
+        updateSteering();
+    }
+
+    //-------------------------------------------------------------------------
+    // Funcione publicas
+    //-------------------------------------------------------------------------
+    public void setTargetPos(Vector3 _pos)
+    {
+        m_targetPos = _pos;
+    }
+
+    public float truncate(float _magnitud, float _max)
+    {
+        if (_magnitud > _max)
+        {
+            _magnitud = _max;
+        }
+
+        return _magnitud;
+    }
+
+    public void updateSteering()
+    {
         // Limpiamos la fuerza
         m_steeringForce = new Vector3();
 
-        if (m_hasTarget)
+        if (m_targetPos != null || m_followNode != null)
         {
-            // Usamos la fuerza
-            m_steeringForce = FollowPath(_seekForce);
+            if (m_targetStateName == STATES.S_PATROL)
+            {
+                // Usamos la fuerza
+                m_steeringForce = FollowPath(_seekForce);
+            }
+            else if (m_targetStateName == STATES.S_WALK)
+            {
+                // Usamos la fuerza
+                m_steeringForce = Arrive(m_targetPos, _seekForce) + Separation();
+            }
 
             // Contenemos la velocidad
             m_speed = truncate(m_steeringForce.magnitude, _maxSpeed);
@@ -65,27 +158,10 @@ public class Agent : MonoBehaviour
 
             // Update direction
             m_direction = newDir;
+
+            // Actualizar la rotacion asset
+            transform.forward = m_direction.normalized;
         }
-    }
-
-    //-------------------------------------------------------------------------
-    // Funcione publicas
-    //-------------------------------------------------------------------------
-    public void setTargetPos(Vector3 _pos)
-    {
-
-        m_targetPos = _pos;
-        m_hasTarget = true;
-    }
-
-    public float truncate(float _magnitud, float _max)
-    {
-        if (_magnitud > _max)
-        {
-            _magnitud = _max;
-        }
-
-        return _magnitud;
     }
 
     //-------------------------------------------------------------------------
