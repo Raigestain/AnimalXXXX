@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class ChargeState : FSM
 {
+
     public override void onEntry()
     {
         Debug.Log("Entro a Charge");
+        GetComponent<Animator>().SetInteger("animation", (int)ANIMAL_STATES.RUN);
         m_ID = STATES.S_CHARGE;
     }
 

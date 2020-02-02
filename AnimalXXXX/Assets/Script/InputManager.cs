@@ -148,7 +148,10 @@ public class InputManager : MonoBehaviour
                     //Se revisa la lista de objetos seleccionados para moverlos a la posicion.
                     foreach (var anim in m_selectedAnimals)
                     {
-                        anim.setTargetPos(position);
+                        if(anim.m_type != ANIMAL_TYPES.AMBIENT)
+                        {
+                            anim.setTargetPos(position);
+                        }
                     }
                 }
             }

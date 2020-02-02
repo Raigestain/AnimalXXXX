@@ -10,6 +10,10 @@ public class Animal : Agent
     //Tipo del animal... jeje saludos.
     public ANIMAL_TYPES m_type;
 
+    private Resources m_package;
+
+    public bool m_deliveredPackage = false;
+
     // Start is called before the first frame update
     protected void Start()
     {
@@ -22,10 +26,27 @@ public class Animal : Agent
     {
         // llamamos el update del padre
         base.Update();
+
+        if(null != m_package)
+        {
+            m_package.UpdatePosition();
+        }
     }
 
     public void SetState(ANIMAL_STATES newState)
     {
         m_changeState = newState;
+    }
+
+    public Resources GetPackage()
+    {
+        Resources tmpResource = m_package;
+        m_package = null;
+        return tmpResource;
+    }
+
+    public void SetPackage(Resources newPackage)
+    {
+        m_package = newPackage;
     }
 }

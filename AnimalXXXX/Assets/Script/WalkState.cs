@@ -21,6 +21,10 @@ public class WalkState : FSM
         {
             return STATES.S_IDLE;
         }
+        if(m_agent.m_changeState == ANIMAL_STATES.RUN)
+        {
+            return STATES.S_RUN;
+        }
         return STATES.S_WALK;
     }
 

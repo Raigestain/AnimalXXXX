@@ -7,6 +7,7 @@ public class DeliverState : FSM
     public override void onEntry()
     {
         Debug.Log("Entro a Deliver");
+        GetComponent<Animator>().SetInteger("animation", (int)ANIMAL_STATES.WALK);
         m_ID = STATES.S_DELIVER;
     }
 

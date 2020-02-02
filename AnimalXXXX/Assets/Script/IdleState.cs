@@ -7,6 +7,7 @@ public class IdleState : FSM
     public override void onEntry()
     {
         Debug.Log("Entro a Idle");
+        GetComponent<Animator>().SetInteger("animation", (int)ANIMAL_STATES.IDLE);
         m_ID = STATES.S_IDLE;
     }
 
@@ -23,11 +24,17 @@ public class IdleState : FSM
             }
             return STATES.S_WALK;
         }
-        else if(tempAnimal.m_type == ANIMAL_TYPES.DOG)
+        else if(tempAnimal.m_type == ANIMAL_TYPES.AMBIENT)
         {
             return STATES.S_PATROL;
         }
-        else if (tempAnimal.m_type == ANIMAL_TYPES.ALPACA)
+        else if(tempAnimal.m_type == ANIMAL_TYPES.ALPACA ||
+                 tempAnimal.m_type == ANIMAL_TYPES.DOG ||
+                 tempAnimal.m_type == ANIMAL_TYPES.HORSE)
+        {
+            return STATES.S_WALK;
+        }
+        else if(tempAnimal.m_type == ANIMAL_TYPES.PIG)
         {
             return STATES.S_RUN;
         }

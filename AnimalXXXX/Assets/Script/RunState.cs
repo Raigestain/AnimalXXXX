@@ -7,6 +7,7 @@ public class RunState : FSM
     public override void onEntry()
     {
         Debug.Log("Entro a Run");
+        GetComponent<Animator>().SetInteger("animation", (int)ANIMAL_STATES.RUN);
         m_ID = STATES.S_RUN;
     }
 

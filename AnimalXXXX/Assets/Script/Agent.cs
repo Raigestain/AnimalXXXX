@@ -5,7 +5,8 @@ using UnityEngine;
 public class Agent : MonoBehaviour
 {
     // Variables publicas
-    public float _seekForce = 5.0f;
+    public float _seekForce = 0.2f;
+    public float _runForce = 0.5f;
     [Range(0.0f, 1.0f)]
     public float _mass = 0.5f;
     public float _velocity = 1.0f;
@@ -129,6 +130,7 @@ public class Agent : MonoBehaviour
     public void setTargetPos(Vector3 _pos)
     {
         m_targetPos = _pos;
+        m_targetPos.y = 0.2f;
     }
 
     public float truncate(float _magnitud, float _max)
@@ -157,6 +159,10 @@ public class Agent : MonoBehaviour
             {
                 // Usamos la fuerza
                 m_steeringForce = Arrive(m_targetPos, _seekForce) + Separation();
+            }
+            else if(m_targetStateName == STATES.S_RUN)
+            {
+                m_steeringForce = Arrive(m_targetPos, _runForce);
             }
 
             // Contenemos la velocidad

@@ -36,7 +36,7 @@ public class ChickenSpawner : MonoBehaviour
         m_tranfromTimer = m_timeToStart;
         m_spawnFog = GetComponentInChildren<ParticleSystem>();
         m_spawnFog.Stop();
-        m_player = GameObject.Find("Player").GetComponent<PlayerData>();
+        m_player = GameObject.Find("Granja").GetComponent<PlayerData>();
 
         var main = m_spawnFog.main;
         main.loop = false;

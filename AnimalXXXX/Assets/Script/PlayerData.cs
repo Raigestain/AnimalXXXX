@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
-    private int[] m_baseDurTiers = { 8, 10, 13, 18, 25, 35 };
+    private const float BARN_OFFSET = 2.2f;
+    private const float DELIVERY_HEIGHT = 0.2f;
 
+    [SerializeField]
+    private float m_barnRadius = 2f;
+
+    private int[] m_baseDurTiers = { 8, 10, 13, 18, 25, 35 };
     private int m_tier = 0;
     private int m_nextResist = 0;
 
@@ -15,13 +20,20 @@ public class PlayerData : MonoBehaviour
     public bool m_lost = false;
     public bool m_won = false;
 
-    private DmgCtrl m_Barn;
+    private float m_timeToDetect = 1f;
+    private float m_detectTimer = 0f;
+
+    private DmgCtrl m_barn;
+    private Vector3 m_deliveryPoint = new Vector3();
 
     // Start is called before the first frame update
     void Start()
     {
         m_nextResist = Mathf.CeilToInt(m_barnResistance * 1.5f);
-        m_Barn = GameObject.Find("Granja").GetComponent<DmgCtrl>();
+        m_barn = GetComponent<DmgCtrl>();
+        m_deliveryPoint = transform.position + transform.right * BARN_OFFSET;
+        m_deliveryPoint.y = DELIVERY_HEIGHT;
+        m_detectTimer = m_timeToDetect;
     }
 
     // Update is called once per frame
@@ -35,8 +47,43 @@ public class PlayerData : MonoBehaviour
         {
             Debug.Log("Win!");
         }
+
+        m_detectTimer -= Time.deltaTime;
+
+        //if(m_detectTimer <= 0)
+        //{
+        DetectAnimal();
+        m_detectTimer = m_timeToDetect;
+        //}
     }
-    
+
+    private void DetectAnimal()
+    {
+        List<Animal> animals = null;
+
+        animals = GetAnimalsByArea(m_deliveryPoint, m_barnRadius);
+
+        foreach (var animal in animals)
+        {
+            if (animal.m_type == ANIMAL_TYPES.HORSE ||
+                animal.m_type == ANIMAL_TYPES.ALPACA ||
+                animal.m_type == ANIMAL_TYPES.DOG)
+            {
+                if(!animal.m_deliveredPackage)
+                {
+                    Resources package = animal.GetPackage();
+                    BuildBarn(package.m_value);
+                    Destroy(package.gameObject);
+                    animal.setTargetPos(new Vector3(0, DELIVERY_HEIGHT, 0));
+                    animal.SetState(ANIMAL_STATES.WALK);
+                    animal.m_deliveredPackage = true;
+                }
+            }
+        }
+
+    }
+
+
     /// <summary>
     /// Regresa una lista de animales que se encuentren en el área indicada.
     /// </summary>
@@ -62,17 +109,19 @@ public class PlayerData : MonoBehaviour
     public void DamageBarn(int damage)
     {
         m_barnDurability -= (damage - m_barnResistance);
-        m_Barn.setScore(m_barnDurability);
+        m_barn.setScore(m_barnDurability);
         if (m_barnDurability <= 0)
         {
             m_lost = true;
         }
+
+        Debug.Log("Barn Durability" + m_barnDurability);
     }
 
     public void BuildBarn(int increase)
     {
         m_barnDurability += increase;
-        m_Barn.setScore(m_barnDurability);
+        m_barn.setScore(m_barnDurability);
         if (m_barnDurability > m_baseDurability)
         {
             m_tier++;
@@ -86,6 +135,12 @@ public class PlayerData : MonoBehaviour
             m_barnResistance = m_nextResist;
             m_nextResist = Mathf.CeilToInt(m_barnResistance * 1.5f);
         }
+
+        Debug.Log("Barn Durability: " + m_barnDurability);
     }
-    
+
+    public Vector3 GetBarnPosition()
+    {
+        return m_barn.transform.position;
+    }
 }
